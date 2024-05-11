@@ -1,48 +1,47 @@
-import { useState } from 'react'
-import PostList from './components/PostList'
-import MyInput from './components/MyInput'
-import MyButton from './components/MyButton';
+import { useState } from "react";
+import PostList from "./components/PostList";
 
 function App() {
-  const [posts, setPosts] = useState(JSON.parse(window.localStorage.getItem("posts")));
-  const [post, setPost] = useState({ title: '', body: '' });
+  const [posts, setPosts] = useState([]);
+  const [currentPosts, setCurrentPosts] = useState(posts);
+  const [postListTitle, setPostListTitle] = useState("About Javascript");
+
+  window.onload = () => {
+    MySetPosts(JSON.parse(window.localStorage.getItem("posts")));
+  };
 
   function MySetPosts(newPosts) {
     setPosts(newPosts);
+    setCurrentPosts(newPosts);
     window.localStorage.setItem("posts", JSON.stringify(newPosts));
+
+    CheckListEmpty(newPosts);
   }
 
-  function AddPost() {
-    MySetPosts([...posts, { id: Date.now(), title: post.title, body: post.body }]);
-
-    setPost({ title: '', body: '' });
+  function CheckListEmpty(list) {
+    if (list.length == 0 && postListTitle !== "Empty List")
+      setPostListTitle("Empty List");
+    else if (list.length > 0 && postListTitle === "Empty List")
+      setPostListTitle("About Javascript");
   }
 
   function RemovePost(post) {
-    MySetPosts(posts.filter(p => p.id !== post.id));
+    MySetPosts(posts.filter((p) => p.id !== post.id));
   }
 
   return (
     <>
-      <div className='flex flex-col my-5 mx-auto w-4/5'>
-        <MyInput
-          value={post.title}
-          onChange={e => setPost({ ...post, title: e.target.value })}
-          type='text'
-          placeholder='Input post title...'
-        />
-        <MyInput
-          className='mt-2'
-          value={post.body}
-          onChange={e => setPost({ ...post, body: e.target.value })}
-          type='text'
-          placeholder='Input post description...'
-        />
-        <MyButton className='mt-5 bg-green-100 border-green-500' onClick={AddPost}>Add Post</MyButton>
-      </div>
-      <PostList posts={posts} title='About Javascript' removePostFunc={RemovePost} setPostsFunc={MySetPosts} />
+      <PostList
+        posts={posts}
+        currentPosts={currentPosts}
+        title={postListTitle}
+        removePostFunc={RemovePost}
+        setPostsFunc={MySetPosts}
+        setCurrentPostsFunc={setCurrentPosts}
+        checkListEmptyFunc={CheckListEmpty}
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

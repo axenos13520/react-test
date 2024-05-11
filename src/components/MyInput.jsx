@@ -1,7 +1,13 @@
-import React from 'react'
+import React from "react";
 
-export default function MyInput({ children, ...props }) {
-    return (
-        <input {...props} className={'pl-1 border-2 rounded-lg ' + props.className} />
-    )
+export default function MyInput({ ...props }) {
+  return (
+    <input
+      {...props}
+      className={
+        "transition-all duration-300 ease-out px-1 bg-slate-100 border-slate-300 border-2 focus:border-slate-400 rounded-lg outline-none shadow-md focus:shadow-slate-400 " +
+        props.className
+      }
+    />
+  );
 }
