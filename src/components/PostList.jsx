@@ -5,8 +5,10 @@ import MyCheckbox from "./MyCheckbox";
 import MyInput from "./MyInput";
 import MyButton from "./MyButton";
 import MyModal from "./MyModal/MyModal";
+import PaginationButtons from "./PaginationButtons";
 
 export default function PostList({
+  className,
   posts,
   currentPosts,
   title,
@@ -19,6 +21,8 @@ export default function PostList({
   const [searchQuery, setSearchQuery] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [post, setPost] = useState({ title: "", body: "" });
+  const [page, setPage] = useState(1);
+  const [pageLimit, setPageLimit] = useState(10);
 
   let isDescending = false;
 
@@ -68,7 +72,12 @@ export default function PostList({
   }
 
   return (
-    <div className="py-3 px-2 mx-auto w-4/5 bg-slate-200 border-4 rounded-lg border-slate-400 shadow-lg shadow-slate-300">
+    <div
+      className={
+        "py-3 px-2 mx-auto w-4/5 bg-slate-200 border-4 rounded-lg border-slate-400 shadow-lg shadow-slate-300 " +
+        className
+      }
+    >
       <div className="grid grid-cols-3 mb-3">
         <div className="flex flex-row">
           <MySelect
@@ -95,7 +104,9 @@ export default function PostList({
         </div>
       </div>
       {currentPosts.map((post, index) => {
-        if (index === currentPosts.length - 1)
+        if (index >= pageLimit * page || index < pageLimit * (page - 1)) return;
+
+        if (index - (page - 1) * pageLimit === pageLimit - 1)
           return (
             <PostItem
               className="border-b-2"
@@ -115,12 +126,20 @@ export default function PostList({
           />
         );
       })}
-      <MyButton
-        className="transition-all duration-300 p-2 mt-3 w-max bg-yellow-300"
-        onClick={() => setModalVisible(true)}
-      >
-        Create New
-      </MyButton>
+      <div className="grid grid-cols-3 mt-4 w-full">
+        <MyButton
+          className="transition-all duration-300 p-2 w-max bg-yellow-300"
+          onClick={() => setModalVisible(true)}
+        >
+          Create New
+        </MyButton>
+        <PaginationButtons
+          page={page}
+          setPage={setPage}
+          pageLimit={pageLimit}
+          elementCount={posts.length}
+        />
+      </div>
       <MyModal visible={modalVisible} setVisible={setModalVisible}>
         <div className="flex flex-col items-center mx-auto w-4/5">
           <MyInput

@@ -14,7 +14,7 @@ export default function MyCheckbox({ className, setState }) {
   return (
     <button
       className={
-        "transition-all duration-200 ease-out border-2 rounded-lg shadow-md " +
+        "transition-all duration-200 ease-out border-2 border-slate-300 rounded-lg shadow-md " +
         bgColor +
         " " +
         className

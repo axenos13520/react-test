@@ -1,19 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostList from "./components/PostList";
+import PostService from "./components/PostService";
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [currentPosts, setCurrentPosts] = useState(posts);
   const [postListTitle, setPostListTitle] = useState("About Javascript");
 
-  window.onload = () => {
-    MySetPosts(JSON.parse(window.localStorage.getItem("posts")));
-  };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      let recievedPosts = await PostService.GetAll((e) =>
+        console.log("ERROR! " + e.message)
+      );
+
+      MySetPosts(recievedPosts);
+    };
+
+    fetchPosts();
+  }, []);
 
   function MySetPosts(newPosts) {
-    if (newPosts === null)
-      newPosts = [{id: 1, title: "Javascript", body: "Description"}];
-
+    console.log(newPosts);
     setPosts(newPosts);
     setCurrentPosts(newPosts);
     window.localStorage.setItem("posts", JSON.stringify(newPosts));
@@ -35,6 +42,7 @@ function App() {
   return (
     <>
       <PostList
+        className="mt-4"
         posts={posts}
         currentPosts={currentPosts}
         title={postListTitle}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import WindowPanelButton from "../WindowPanelButton";
 
 export default function MyModal({ children, visible, setVisible }) {
-  const [position, setPosition] = useState([0, 0]);
+  const [position, setPosition] = useState([100, 100]);
   const [dragging, setDragging] = useState(false);
   const [lastMousePosition, setLastMousePosition] = useState([0, 0]);
   const [windowClasses, setWindowClasses] = useState([]);
@@ -61,7 +61,7 @@ export default function MyModal({ children, visible, setVisible }) {
     >
       <div
         className={
-          `transition-opacity duration-300 ease-out absolute p-6 pt-10 min-w-64 h-min rounded-lg bg-slate-200 border-4 border-slate-400 shadow-lg shadow-slate-300 ` +
+          `transition-opacity duration-300 ease-out absolute p-6 pt-10 min-w-64 h-min rounded-lg bg-slate-200 border-4 border-slate-400 shadow-lg shadow-slate-300` +
           windowClasses.join(" ")
         }
         onMouseDown={OnMouseDown}
