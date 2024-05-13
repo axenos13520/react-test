@@ -11,6 +11,9 @@ function App() {
   };
 
   function MySetPosts(newPosts) {
+    if (newPosts === null)
+      newPosts = [{id: 1, title: "Javascript", body: "Description"}];
+
     setPosts(newPosts);
     setCurrentPosts(newPosts);
     window.localStorage.setItem("posts", JSON.stringify(newPosts));

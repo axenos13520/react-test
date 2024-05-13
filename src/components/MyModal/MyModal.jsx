@@ -6,7 +6,7 @@ export default function MyModal({ children, visible, setVisible }) {
   const [dragging, setDragging] = useState(false);
   const [lastMousePosition, setLastMousePosition] = useState([0, 0]);
   const [windowClasses, setWindowClasses] = useState([]);
-  const [windowOpacity, setWindowOpacity] = useState(100);
+  const [windowOpacity, setWindowOpacity] = useState(0);
   const [hiddenClass, setHiddenClass] = useState("hidden");
 
   function CloseWindow() {
@@ -61,11 +61,11 @@ export default function MyModal({ children, visible, setVisible }) {
     >
       <div
         className={
-          `transition-opacity opacity-${windowOpacity} duration-300 ease-out absolute p-6 pt-10 min-w-64 h-min rounded-lg bg-slate-200 border-4 border-slate-400 shadow-lg shadow-slate-300 ` +
+          `transition-opacity duration-300 ease-out absolute p-6 pt-10 min-w-64 h-min rounded-lg bg-slate-200 border-4 border-slate-400 shadow-lg shadow-slate-300 ` +
           windowClasses.join(" ")
         }
         onMouseDown={OnMouseDown}
-        style={{ left: position[0], top: position[1] }}
+        style={{ left: position[0], top: position[1], opacity: windowOpacity }}
       >
         <div className="absolute right-1 top-1 flex flex-row justify-between w-12">
           <WindowPanelButton className="bg-green-500" />
