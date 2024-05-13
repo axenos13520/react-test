@@ -20,10 +20,8 @@ function App() {
   }, []);
 
   function MySetPosts(newPosts) {
-    console.log(newPosts);
     setPosts(newPosts);
     setCurrentPosts(newPosts);
-    window.localStorage.setItem("posts", JSON.stringify(newPosts));
 
     CheckListEmpty(newPosts);
   }

@@ -5,7 +5,7 @@ import MyCheckbox from "./MyCheckbox";
 import MyInput from "./MyInput";
 import MyButton from "./MyButton";
 import MyModal from "./MyModal/MyModal";
-import PaginationButtons from "./PaginationButtons";
+import PaginationButtons from "./pagination/PaginationButtons";
 
 export default function PostList({
   className,
@@ -22,7 +22,7 @@ export default function PostList({
   const [modalVisible, setModalVisible] = useState(false);
   const [post, setPost] = useState({ title: "", body: "" });
   const [page, setPage] = useState(1);
-  const [pageLimit, setPageLimit] = useState(10);
+  const [pageLimit, setPageLimit] = useState(5);
 
   let isDescending = false;
 
@@ -39,7 +39,7 @@ export default function PostList({
     isDescending = value;
 
     if (selectedSort != "") {
-      SortPosts(selectedSort, value);
+      SortPosts(selectedSort);
       OnSearchBarChanged(searchQuery);
     }
   }
@@ -65,7 +65,7 @@ export default function PostList({
   }
 
   function SortPosts(sort) {
-    if (!isDescending)
+    if (isDescending)
       setPostsFunc([...posts].sort((a, b) => b[sort].localeCompare(a[sort])));
     else
       setPostsFunc([...posts].sort((a, b) => a[sort].localeCompare(b[sort])));
@@ -97,7 +97,7 @@ export default function PostList({
         <h1 className="text-center text-2xl font-bold">{title}</h1>
         <div className="flex flex-row justify-end align-middle w-full">
           <MyInput
-            className="pl-8 w-5/6 bg-search-bar-icon bg-no-repeat bg-[0.3rem] bg-[length:7%] border-slate-300"
+            className="pl-8 w-5/6 bg-search-bar-icon bg-no-repeat bg-[0.3rem] bg-[length:6%] border-slate-300"
             value={searchQuery}
             onChange={(e) => OnSearchBarChanged(e.target.value)}
           />
@@ -109,7 +109,7 @@ export default function PostList({
         if (index - (page - 1) * pageLimit === pageLimit - 1)
           return (
             <PostItem
-              className="border-b-2"
+              className="border-b-2 max-h-24 h-24 whitespace-nowrap overflow-hidden text-ellipsis"
               removePostFunc={removePostFunc}
               number={index + 1}
               post={post}
@@ -119,6 +119,7 @@ export default function PostList({
 
         return (
           <PostItem
+            className="max-h-24 h-24 whitespace-nowrap overflow-hidden text-ellipsis"
             removePostFunc={removePostFunc}
             number={index + 1}
             post={post}
@@ -128,7 +129,7 @@ export default function PostList({
       })}
       <div className="grid grid-cols-3 mt-4 w-full">
         <MyButton
-          className="transition-all duration-300 p-2 w-max bg-yellow-300"
+          className="transition-all duration-300 p-2 ml-3 w-max bg-yellow-300 font-semibold"
           onClick={() => setModalVisible(true)}
         >
           Create New
@@ -137,8 +138,18 @@ export default function PostList({
           page={page}
           setPage={setPage}
           pageLimit={pageLimit}
-          elementCount={posts.length}
+          elementCount={currentPosts.length}
+          buttonsCount={9}
         />
+        <h1 className="mt-auto mr-4 text-right font-medium text-slate-400">
+          {currentPosts.length > 0
+            ? `${(page - 1) * pageLimit + 1}..${
+                (page - 1) * pageLimit + pageLimit <= currentPosts.length
+                  ? (page - 1) * pageLimit + pageLimit
+                  : currentPosts.length
+              }/${currentPosts.length}`
+            : "0/0"}
+        </h1>
       </div>
       <MyModal visible={modalVisible} setVisible={setModalVisible}>
         <div className="flex flex-col items-center mx-auto w-4/5">

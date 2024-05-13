@@ -3,7 +3,7 @@ import React from "react";
 export default function MySelect({ options, defaultValue, value, onChange }) {
   return (
     <select
-      className="p-1 rounded-lg max-w-max bg-slate-100 border-2 border-slate-300s"
+      className="p-1 rounded-lg max-w-max bg-slate-100 border-2 border-slate-300s font-semibold"
       value={value}
       onChange={(e) => onChange(e.target.value)}
     >
